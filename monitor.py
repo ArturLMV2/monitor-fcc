@@ -8,6 +8,18 @@ from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
 
+import logging
+import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 URL = "https://www.concursosfcc.com.br/concursos/cpupe125/index.html"
 CACHE = "/data/cache.json"
@@ -37,9 +49,9 @@ def enviar_email(mensagem):
 
 def alerta_visual():
     for _ in range(5):
-        print("\033[1;31m")
-        print("🚨🚨🚨 NOVA PUBLICAÇÃO DETECTADA 🚨🚨🚨")
-        print("\033[0m")
+        logger.info("\033[1;31m")
+        logger.info("🚨🚨🚨 NOVA PUBLICAÇÃO DETECTADA 🚨🚨🚨")
+        logger.info("\033[0m")
         time.sleep(0.3)
 
 
@@ -56,7 +68,7 @@ def baixar_pagina(url, tentativas=3):
                 "Connection": "keep-alive"
             }
 
-            print(f"🌐 Acessando com UA rotativo...")
+            logger.info(f"🌐 Acessando com UA rotativo...")
 
             response = requests.get(
                 url,
@@ -68,7 +80,7 @@ def baixar_pagina(url, tentativas=3):
             return response.text
 
         except Exception as e:
-            print(f"⚠️ tentativa {tentativa+1} falhou: {e}")
+            logger.info(f"⚠️ tentativa {tentativa+1} falhou: {e}")
             time.sleep(10)
 
     raise Exception("Falha ao acessar página após retries")
@@ -109,8 +121,8 @@ def salvar_cache(data):
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-print("🚀 Monitor FCC iniciado...")
-print("👀 Aguardando alterações...\n")
+logger.info("🚀 Monitor FCC iniciado...")
+logger.info("👀 Aguardando alterações...\n")
 
 while True:
     try:
@@ -129,22 +141,22 @@ while True:
             alerta_visual()
             beep()
 
-            print("\n🚨🚨🚨 NOVA PUBLICAÇÃO DETECTADA 🚨🚨🚨")
-            print(f"⏰ {datetime.now()}\n")
+            logger.info("\n🚨🚨🚨 NOVA PUBLICAÇÃO DETECTADA 🚨🚨🚨")
+            logger.info(f"⏰ {datetime.now()}\n")
 
             for item in novos:
-                print(f"📄 {item['texto']}")
-                print(f"🔗 {item['href']}\n")
+                logger.info(f"📄 {item['texto']}")
+                logger.info(f"🔗 {item['href']}\n")
 
             salvar_cache(atuais)
 
         else:
-            print(f"✔ Sem mudanças - {datetime.now()}")
+            logger.info(f"✔ Sem mudanças - {datetime.now()}")
 
     except Exception as e:
-        print(f"❌ erro: {e}")
+        logger.info(f"❌ erro: {e}")
 
     # delay com pequena variação para evitar bloqueio
     sleep_time = INTERVALO + random.randint(-60, 60)
-    print(f"⏳ Aguardando {sleep_time}s...\n")
+    logger.info(f"⏳ Aguardando {sleep_time}s...\n")
     time.sleep(sleep_time)
