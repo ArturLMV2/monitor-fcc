@@ -55,10 +55,6 @@ def alerta_visual():
         time.sleep(0.3)
 
 
-def beep():
-    open("/data/alert.txt", "w").close()
-
-
 def baixar_pagina(url, tentativas=3):
     for tentativa in range(tentativas):
         try:
