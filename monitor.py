@@ -10,7 +10,7 @@ from email.mime.text import MIMEText
 
 URL = "https://www.concursosfcc.com.br/concursos/cpupe125/index.html"
 CACHE = "/data/cache.json"
-INTERVALO = 1800  # 5 minutos
+INTERVALO = int(os.environ.get("TIME_INTERVAL") or 1800)  # 5 minutos
 def enviar_email(mensagem):
     
     remetente = os.environ.get("EMAIL_USER")
