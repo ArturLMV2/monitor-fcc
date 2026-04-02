@@ -2,7 +2,7 @@ name: Monitor FCC
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # a cada 60 minutos
+    - cron: '*/5 * * * *'   # a cada 60 minutos
 
 jobs:
   monitor:
