@@ -12,6 +12,9 @@ URL = "https://www.concursosfcc.com.br/concursos/cpupe125/index.html"
 CACHE = "cache.json"   # <-- sem /data
 INTERVALO = int(os.environ.get("TIME_INTERVAL") or 1800)
 
+def agora():
+    from datetime import datetime, timezone, timedelta
+    return (datetime.now(timezone.utc) - timedelta(hours=3)).strftime('%d/%m/%Y %H:%M:%S')
 
 def enviar_email(mensagem):
     remetente = os.environ.get("EMAIL_USER")
@@ -70,7 +73,7 @@ def salvar_cache(data):
 
 def main():
     print("🚀 Monitor FCC iniciado...")
-    print(f"⏰ {datetime.now()}")
+    print(f"⏰ {agora()}")
 
     try:
         antigos = carregar_cache()
