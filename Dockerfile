@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y alsa-utils
 RUN apt-get update && apt-get install -y tzdata
 ENV TZ=America/Sao_Paulo
 COPY monitor.py .
-
+COPY . .
 #VOLUME ["/data"]
 
 CMD ["python", "monitor.py"]

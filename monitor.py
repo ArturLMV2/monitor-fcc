@@ -7,13 +7,15 @@ from datetime import datetime
 import smtplib
 from email.mime.text import MIMEText
 
+
 URL = "https://www.concursosfcc.com.br/concursos/cpupe125/index.html"
 CACHE = "/data/cache.json"
-INTERVALO = 60  # 5 minutos
+INTERVALO = 1800  # 5 minutos
 def enviar_email(mensagem):
-    remetente = "arturluism@gmail.com"
-    senha = ""
-    destinatario = "arturluis_@hotmail.com, raylanemns@gmail.com"
+    
+    remetente = os.environ.get("EMAIL_USER")
+    senha = os.environ.get("EMAIL_PASS")
+    destinatario = os.environ.get("EMAIL_TO")
 
     msg = MIMEText(mensagem)
     msg["Subject"] = "🚨 Nova publicação FCC"
