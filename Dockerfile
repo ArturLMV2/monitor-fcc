@@ -9,6 +9,6 @@ RUN apt-get update && apt-get install -y tzdata
 ENV TZ=America/Sao_Paulo
 COPY monitor.py .
 
-VOLUME ["/data"]
+//VOLUME ["/data"]
 
 CMD ["python", "monitor.py"]
