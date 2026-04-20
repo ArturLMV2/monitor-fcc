@@ -1,8 +1,8 @@
 name: Monitor FCC
 
 on:
-  schedule:
-    - cron: '0 5 * * 1'   # a cada 60 minutos
+  #schedule:
+    #- cron: '0 5 * * 1'   # a cada 60 minutos
   workflow_dispatch:
 
 jobs:
